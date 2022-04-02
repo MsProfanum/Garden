@@ -11,4 +11,7 @@ abstract class PlantTypeDao {
 
   @Query('SELECT * FROM PlantType WHERE type = :type')
   Future<PlantType?> findPlantTypeByType(String type);
+
+  @insert
+  Future<void> insertPlantType(PlantType plantType);
 }

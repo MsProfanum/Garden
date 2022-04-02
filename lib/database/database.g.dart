@@ -211,13 +211,20 @@ class _$PlantDao extends PlantDao {
 
 class _$PlantTypeDao extends PlantTypeDao {
   _$PlantTypeDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database);
+      : _queryAdapter = QueryAdapter(database),
+        _plantTypeInsertionAdapter = InsertionAdapter(
+            database,
+            'PlantType',
+            (PlantType item) =>
+                <String, Object?>{'id': item.id, 'type': item.type});
 
   final sqflite.DatabaseExecutor database;
 
   final StreamController<String> changeListener;
 
   final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<PlantType> _plantTypeInsertionAdapter;
 
   @override
   Future<List<PlantType>> findAllPlantTypes() async {
@@ -240,5 +247,11 @@ class _$PlantTypeDao extends PlantTypeDao {
         mapper: (Map<String, Object?> row) =>
             PlantType(row['id'] as int, row['type'] as String),
         arguments: [type]);
+  }
+
+  @override
+  Future<void> insertPlantType(PlantType plantType) async {
+    await _plantTypeInsertionAdapter.insert(
+        plantType, OnConflictStrategy.abort);
   }
 }
