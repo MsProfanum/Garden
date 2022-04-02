@@ -1,5 +1,6 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:garden/feature/add_plant/ui/add_plant_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,7 +23,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => print('Adding plant'),
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const AddPlantPage()))
+            .then((value) => ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('Plant saved!')))),
         label: Row(
           children: const [
             Icon(
