@@ -1,4 +1,5 @@
 import 'package:garden/database/database.dart';
+import 'package:garden/database/plant/plant_entity.dart';
 import 'package:garden/database/plant_type/plant_type_entity.dart';
 
 class DataSource {
@@ -37,5 +38,13 @@ class DataSource {
 
   Future<List<PlantType>> findAllPlantTypes() {
     return database.plantTypeDao.findAllPlantTypes();
+  }
+
+  Future<List<Plant>> findAllPlants() {
+    return database.plantDao.findAllPlants();
+  }
+
+  Future<void> insertPlant(Plant plant) {
+    return database.plantDao.insertPlant(plant);
   }
 }

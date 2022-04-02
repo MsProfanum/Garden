@@ -23,8 +23,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const AddPlantPage())),
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const AddPlantPage()))
+            .then((value) => ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('Plant saved!')))),
         label: Row(
           children: const [
             Icon(

@@ -12,7 +12,8 @@ class AddPlantPage extends StatefulWidget {
 
 class _AddPlantPageState extends State<AddPlantPage> {
   final TextEditingController _plantNameController = TextEditingController();
-  String? defaultPlantType;
+  String? plantType;
+  DateTime? plantingDate;
   late AddPlantBloc bloc;
 
   @override
@@ -25,25 +26,38 @@ class _AddPlantPageState extends State<AddPlantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AddPlantBloc, AddPlantState>(
+      body: BlocConsumer<AddPlantBloc, AddPlantState>(
+        listener: (context, state) {
+          if (state is PlantSaved) {
+            Navigator.pop(context);
+          }
+        },
         builder: (context, state) {
-          if (state is! AddPlantLoaded) {
+          if (state is Loading) {
             return const Center(child: CircularProgressIndicator());
           }
-          return Center(
-            child: Column(
-              children: [
-                _titleSection(),
-                _plantNameSection(),
-                _plantTypeSection(state.plantTypes),
-                _plantingDateSection(DateTime.now()),
-                const Spacer(),
-                ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Add plant')),
-              ],
-            ),
-          );
+          if (state is AddPlantLoaded) {
+            return Center(
+              child: Column(
+                children: [
+                  _titleSection(),
+                  _plantNameSection(),
+                  _plantTypeSection(state.plantTypes),
+                  _plantingDateSection(DateTime.now()),
+                  const Spacer(),
+                  ElevatedButton(
+                      onPressed: () {
+                        bloc.add(SavePlant(
+                            _plantNameController.value.text,
+                            plantType ?? state.plantTypes[0].type,
+                            plantingDate!.millisecondsSinceEpoch));
+                      },
+                      child: const Text('Add plant')),
+                ],
+              ),
+            );
+          }
+          return Container();
         },
       ),
     );
@@ -74,7 +88,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
         children: [
           const Text('Plant type: '),
           DropdownButton<String>(
-            value: defaultPlantType ?? plantTypes[0].type,
+            value: plantType ?? plantTypes[0].type,
             items: plantTypes
                 .map<DropdownMenuItem<String>>(
                   (e) => DropdownMenuItem<String>(
@@ -84,7 +98,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
                 )
                 .toList(),
             onChanged: (String? value) => setState(() {
-              defaultPlantType = value!;
+              plantType = value!;
             }),
           ),
         ],
@@ -95,13 +109,36 @@ class _AddPlantPageState extends State<AddPlantPage> {
   Widget _plantingDateSection(DateTime dateTime) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
         children: [
-          const Text('Day of planting: '),
-          Text(dateTime.toString()),
+          plantingDate != null
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('Day of planting: '),
+                    Text('${plantingDate!.day}.${plantingDate!.month}'
+                        '.${plantingDate!.year}')
+                  ],
+                )
+              : Container(),
+          ElevatedButton(
+              onPressed: () => _selectDate(), child: const Text('Select date'))
         ],
       ),
     );
+  }
+
+  Future<void> _selectDate() async {
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: plantingDate ?? DateTime.now(),
+        firstDate: DateTime(1920),
+        lastDate: DateTime.now());
+
+    if (pickedDate != null && pickedDate != plantingDate) {
+      setState(() {
+        plantingDate = pickedDate;
+      });
+    }
   }
 }
