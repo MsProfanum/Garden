@@ -1,0 +1,21 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    always_use_package_imports: true
+    avoid_empty_else: true
+    lines_longer_than_80_chars: true
+    camel_case_extensions: true
+    camel_case_types: true
+    annotate_overrides: true
+    curly_braces_in_flow_control_structures: true
+    prefer_single_quotes: true
+    avoid_renaming_method_parameters: true
+    avoid_return_types_on_setters: true
+    eol_at_end_of_file: true
+    file_names: true
+    flutter_style_todos: true
+    leading_newlines_in_multiline_strings: true
+    library_prefixes: true
+    constant_identifier_names: false
+    implementation_imports: false
