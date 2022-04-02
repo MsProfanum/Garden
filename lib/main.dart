@@ -5,6 +5,7 @@ import 'package:garden/feature/add_plant/bloc/add_plant_bloc.dart';
 import 'package:garden/feature/home/ui/home_page.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   DataSource dataSource = await DataSource.newInstance();
 
   runApp(MultiBlocProvider(providers: [
