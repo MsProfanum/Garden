@@ -21,6 +21,8 @@ dependencies:
   anim_search_bar: ^2.0.2
   floor_generator: ^1.2.0
   import_sorter: ^4.6.0
+  equatable: ^2.0.3
+  flutter_bloc: ^8.0.1
 
 dev_dependencies:
   flutter_test:

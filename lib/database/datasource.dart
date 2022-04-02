@@ -34,4 +34,8 @@ class DataSource {
       }
     }
   }
+
+  Future<List<PlantType>> findAllPlantTypes() {
+    return database.plantTypeDao.findAllPlantTypes();
+  }
 }
