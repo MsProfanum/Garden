@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:garden/feature/home_page/ui/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,9 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Garden',
-      home: Scaffold(body: Container()),
+      home: HomePage(),
     );
   }
 }
