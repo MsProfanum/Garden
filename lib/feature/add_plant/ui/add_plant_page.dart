@@ -29,7 +29,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
       body: BlocConsumer<AddPlantBloc, AddPlantState>(
         listener: (context, state) {
           if (state is PlantSaved) {
-            Navigator.pop(context);
+            Navigator.pop(context, 1);
           }
         },
         builder: (context, state) {
