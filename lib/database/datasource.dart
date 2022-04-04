@@ -1,3 +1,4 @@
+// Project imports:
 import 'package:garden/database/database.dart';
 import 'package:garden/database/plant/plant_entity.dart';
 import 'package:garden/database/plant_type/plant_type_entity.dart';
@@ -40,11 +41,19 @@ class DataSource {
     return database.plantTypeDao.findAllPlantTypes();
   }
 
-  Future<List<Plant>> findAllPlants() {
-    return database.plantDao.findAllPlants();
+  Future<List<Plant>> findPlants({required int pageSize, required int offset}) {
+    return database.plantDao.findAllPlants(pageSize, offset);
   }
 
-  Future<void> insertPlant(Plant plant) {
-    return database.plantDao.insertPlant(plant);
+  Future<void> insertPlant(Plant plant) async {
+    database.plantDao.insertPlant(plant);
+  }
+
+  Future<void> updatePlant(Plant plant) async {
+    database.plantDao.updatePlant(plant);
+  }
+
+  Future<void> deletePlant(Plant plant) async {
+    database.plantDao.deletePlant(plant);
   }
 }

@@ -1,7 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:garden/database/datasource.dart';
 import 'package:garden/feature/add_plant/bloc/add_plant_bloc.dart';
+import 'package:garden/feature/home/bloc/home_bloc.dart';
 import 'package:garden/feature/home/ui/home_page.dart';
 
 void main() async {
@@ -9,7 +15,8 @@ void main() async {
   DataSource dataSource = await DataSource.newInstance();
 
   runApp(MultiBlocProvider(providers: [
-    BlocProvider<AddPlantBloc>(create: (context) => AddPlantBloc(dataSource))
+    BlocProvider<AddPlantBloc>(create: (context) => AddPlantBloc(dataSource)),
+    BlocProvider<HomeBloc>(create: (context) => HomeBloc(dataSource))
   ], child: const MyApp()));
 }
 

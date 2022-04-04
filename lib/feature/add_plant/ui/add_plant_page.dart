@@ -1,5 +1,10 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:garden/database/plant_type/plant_type_entity.dart';
 import 'package:garden/feature/add_plant/bloc/add_plant_bloc.dart';
 
@@ -29,7 +34,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
       body: BlocConsumer<AddPlantBloc, AddPlantState>(
         listener: (context, state) {
           if (state is PlantSaved) {
-            Navigator.pop(context);
+            Navigator.pop(context, 1);
           }
         },
         builder: (context, state) {
