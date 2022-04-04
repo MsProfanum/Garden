@@ -10,9 +10,15 @@ class HomeInitial extends HomeState {
 
 class HomeLoaded extends HomeState {
   List<Plant> plants;
+  bool isLastPage;
 
-  HomeLoaded(this.plants);
+  HomeLoaded({required this.plants, required this.isLastPage});
 
   @override
-  List<Object?> get props => [plants];
+  List<Object?> get props => [plants, isLastPage];
+}
+
+class Error extends HomeState {
+  @override
+  List<Object?> get props => [];
 }

@@ -5,6 +5,8 @@ abstract class HomeEvent {}
 
 class InitHome extends HomeEvent {}
 
+class Paginate extends HomeEvent {}
+
 class Filter extends HomeEvent {
   String searchedText;
 

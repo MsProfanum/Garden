@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:floor/floor.dart';
+
+// Project imports:
 import 'package:garden/database/plant_type/plant_type_entity.dart';
 
 @dao

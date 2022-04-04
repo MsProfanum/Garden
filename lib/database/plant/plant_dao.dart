@@ -1,10 +1,13 @@
+// Package imports:
 import 'package:floor/floor.dart';
+
+// Project imports:
 import 'package:garden/database/plant/plant_entity.dart';
 
 @dao
 abstract class PlantDao {
-  @Query('SELECT * FROM Plant')
-  Future<List<Plant>> findAllPlants();
+  @Query('SELECT * FROM Plant ORDER BY id LIMIT :offset, :pageSize')
+  Future<List<Plant>> findAllPlants(int pageSize, int offset);
 
   @Query('SELECT * FROM Plant WHERE id = :id')
   Future<Plant?> findPlantById(int id);
