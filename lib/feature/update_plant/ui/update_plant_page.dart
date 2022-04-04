@@ -1,6 +1,10 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:garden/database/plant/plant_entity.dart';
 import 'package:garden/database/plant_type/plant_type_entity.dart';
 import 'package:garden/feature/update_plant/bloc/update_plant_bloc.dart';

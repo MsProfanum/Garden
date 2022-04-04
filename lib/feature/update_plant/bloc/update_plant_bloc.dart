@@ -1,9 +1,12 @@
+// Package imports:
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+
+// Project imports:
 import 'package:garden/database/datasource.dart';
 import 'package:garden/database/plant/plant_entity.dart';
 import 'package:garden/database/plant_type/plant_type_entity.dart';
-import 'package:meta/meta.dart';
 
 part 'update_plant_event.dart';
 part 'update_plant_state.dart';
