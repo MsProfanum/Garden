@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Project imports:
 import 'package:garden/feature/add_plant/ui/add_plant_page.dart';
 import 'package:garden/feature/home/bloc/home_bloc.dart';
+import 'package:garden/feature/update_plant/ui/update_plant_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -58,6 +59,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () async {
           int? result = await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const AddPlantPage()));
+
           if (result == 1) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Plant saved!')));
@@ -137,7 +139,18 @@ class _HomePageState extends State<HomePage> {
                         title: Center(child: CircularProgressIndicator()),
                       )
                     : ListTile(
-                        tileColor: Colors.red,
+                        onTap: () async {
+                          String? result = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      UpdatePlantPage(state.plants[index])));
+
+                          if (result != null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(result)));
+                            bloc.add(InitHome());
+                          }
+                        },
                         title: Text(state.plants[index].name),
                         leading: Text(state.plants[index].type),
                       ))),
