@@ -1,40 +1,71 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garden/database/plant/plant_entity.dart';
+import 'package:garden/database/plant_type/plant_type_entity.dart';
+import 'package:garden/feature/update_plant/bloc/update_plant_bloc.dart';
 
 class UpdatePlantPage extends StatefulWidget {
-  const UpdatePlantPage({Key? key}) : super(key: key);
+  Plant plant;
+
+  UpdatePlantPage(this.plant, {Key? key}) : super(key: key);
 
   @override
   _UpdatePlantPageState createState() => _UpdatePlantPageState();
 }
 
 class _UpdatePlantPageState extends State<UpdatePlantPage> {
-  final TextEditingController _plantNameController = TextEditingController();
-  String? plantType;
-  DateTime? plantingDate;
+  late TextEditingController _plantNameController;
+  late String plantType;
+  late DateTime plantingDate;
+  late UpdatePlantBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _plantNameController = TextEditingController(text: widget.plant.name);
+    plantType = widget.plant.type;
+    plantingDate =
+        DateTime.fromMillisecondsSinceEpoch(widget.plant.plantingDate);
+    bloc = BlocProvider.of<UpdatePlantBloc>(context);
+    bloc.add(InitUpdatePlant());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            _titleSection(),
-            _changePlantNameSection(),
-            _changePlantTypeSection(['aplines', 'aquatic']),
-            _changePlantingDateSection(DateTime.now()),
-            const Spacer(),
-            ElevatedButton(
-                onPressed: () {
-                  // bloc.add(UpdatePlant(
-                  //     _plantNameController.value.text,
-                  //     plantType ?? state.plantTypes[0].type,
-                  //     plantingDate!.millisecondsSinceEpoch));
-                },
-                child: const Text('Update plant')),
-          ],
-        ),
-      ),
+    return BlocConsumer<UpdatePlantBloc, UpdatePlantState>(
+      listener: (context, state) {
+        if (state is UpdatedPlant) {
+          Navigator.pop(context, 1);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: Center(
+            child: state is UpdatePlantLoaded
+                ? Column(
+                    children: [
+                      _titleSection(),
+                      _changePlantNameSection(),
+                      _changePlantTypeSection(state.plantTypes),
+                      _changePlantingDateSection(DateTime.now()),
+                      const Spacer(),
+                      ElevatedButton(
+                          onPressed: () {
+                            bloc.add(UpdatePlant(
+                                widget.plant.id,
+                                _plantNameController.value.text,
+                                plantType,
+                                plantingDate.millisecondsSinceEpoch));
+                          },
+                          child: const Text('Update plant')),
+                    ],
+                  )
+                : const CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 
@@ -50,12 +81,11 @@ class _UpdatePlantPageState extends State<UpdatePlantPage> {
       padding: const EdgeInsets.all(16.0),
       child: TextField(
         controller: _plantNameController,
-        decoration: const InputDecoration(hintText: 'Plant name...'),
       ),
     );
   }
 
-  Widget _changePlantTypeSection(List<String> plantTypes) {
+  Widget _changePlantTypeSection(List<PlantType> plantTypes) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -63,12 +93,12 @@ class _UpdatePlantPageState extends State<UpdatePlantPage> {
         children: [
           const Text('Plant type: '),
           DropdownButton<String>(
-            value: plantType ?? plantTypes[0],
+            value: plantType,
             items: plantTypes
                 .map<DropdownMenuItem<String>>(
                   (e) => DropdownMenuItem<String>(
-                    value: e,
-                    child: Text(e),
+                    value: e.type,
+                    child: Text(e.type),
                   ),
                 )
                 .toList(),
@@ -86,18 +116,16 @@ class _UpdatePlantPageState extends State<UpdatePlantPage> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          plantingDate != null
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text('Day of planting: '),
-                    Text('${plantingDate!.day}.${plantingDate!.month}'
-                        '.${plantingDate!.year}')
-                  ],
-                )
-              : Container(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Text('Day of planting: '),
+              Text('${plantingDate.day}.${plantingDate.month}'
+                  '.${plantingDate.year}')
+            ],
+          ),
           ElevatedButton(
-              onPressed: () => _selectDate(), child: const Text('Select date'))
+              onPressed: () => _selectDate(), child: const Text('Change date'))
         ],
       ),
     );
@@ -106,7 +134,7 @@ class _UpdatePlantPageState extends State<UpdatePlantPage> {
   Future<void> _selectDate() async {
     final DateTime? pickedDate = await showDatePicker(
         context: context,
-        initialDate: plantingDate ?? DateTime.now(),
+        initialDate: plantingDate,
         firstDate: DateTime(1920),
         lastDate: DateTime.now());
 

@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () async {
           int? result = await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const AddPlantPage()));
+
           if (result == 1) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Plant saved!')));
@@ -138,9 +139,19 @@ class _HomePageState extends State<HomePage> {
                         title: Center(child: CircularProgressIndicator()),
                       )
                     : ListTile(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => const UpdatePlantPage())),
+                        onTap: () async {
+                          int result = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      UpdatePlantPage(state.plants[index])));
+
+                          if (result == 1) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Plant updated!')));
+                            bloc.add(InitHome());
+                          }
+                        },
                         title: Text(state.plants[index].name),
                         leading: Text(state.plants[index].type),
                       ))),

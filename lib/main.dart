@@ -9,6 +9,7 @@ import 'package:garden/database/datasource.dart';
 import 'package:garden/feature/add_plant/bloc/add_plant_bloc.dart';
 import 'package:garden/feature/home/bloc/home_bloc.dart';
 import 'package:garden/feature/home/ui/home_page.dart';
+import 'package:garden/feature/update_plant/bloc/update_plant_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,8 @@ void main() async {
 
   runApp(MultiBlocProvider(providers: [
     BlocProvider<AddPlantBloc>(create: (context) => AddPlantBloc(dataSource)),
+    BlocProvider<UpdatePlantBloc>(
+        create: (context) => UpdatePlantBloc(dataSource)),
     BlocProvider<HomeBloc>(create: (context) => HomeBloc(dataSource))
   ], child: const MyApp()));
 }
