@@ -23,5 +23,9 @@ class UpdatePlantBloc extends Bloc<UpdatePlantEvent, UpdatePlantState> {
           Plant(event.id, event.name, event.type, event.plantingDate));
       emit(UpdatedPlant());
     });
+    on<DeletePlant>((event, emit) async {
+      await dataSource.deletePlant(event.plant);
+      emit(DeletedPlant());
+    });
   }
 }

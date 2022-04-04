@@ -140,15 +140,14 @@ class _HomePageState extends State<HomePage> {
                       )
                     : ListTile(
                         onTap: () async {
-                          int result = await Navigator.of(context).push(
+                          String? result = await Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) =>
                                       UpdatePlantPage(state.plants[index])));
 
-                          if (result == 1) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Plant updated!')));
+                          if (result != null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(result)));
                             bloc.add(InitHome());
                           }
                         },

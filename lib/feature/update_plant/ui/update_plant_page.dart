@@ -41,7 +41,10 @@ class _UpdatePlantPageState extends State<UpdatePlantPage> {
     return BlocConsumer<UpdatePlantBloc, UpdatePlantState>(
       listener: (context, state) {
         if (state is UpdatedPlant) {
-          Navigator.pop(context, 1);
+          Navigator.pop(context, 'Plant updated');
+        }
+        if (state is DeletedPlant) {
+          Navigator.pop(context, 'Plant deleted');
         }
       },
       builder: (context, state) {
@@ -55,15 +58,7 @@ class _UpdatePlantPageState extends State<UpdatePlantPage> {
                       _changePlantTypeSection(state.plantTypes),
                       _changePlantingDateSection(DateTime.now()),
                       const Spacer(),
-                      ElevatedButton(
-                          onPressed: () {
-                            bloc.add(UpdatePlant(
-                                widget.plant.id,
-                                _plantNameController.value.text,
-                                plantType,
-                                plantingDate.millisecondsSinceEpoch));
-                          },
-                          child: const Text('Update plant')),
+                      _buttonsSection(),
                     ],
                   )
                 : const CircularProgressIndicator(),
@@ -147,5 +142,28 @@ class _UpdatePlantPageState extends State<UpdatePlantPage> {
         plantingDate = pickedDate;
       });
     }
+  }
+
+  Widget _buttonsSection() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Colors.red),
+            onPressed: () {
+              bloc.add(DeletePlant(widget.plant));
+            },
+            child: const Text('Delete the plant')),
+        ElevatedButton(
+            onPressed: () {
+              bloc.add(UpdatePlant(
+                  widget.plant.id,
+                  _plantNameController.value.text,
+                  plantType,
+                  plantingDate.millisecondsSinceEpoch));
+            },
+            child: const Text('Update plant'))
+      ],
+    );
   }
 }

@@ -21,3 +21,8 @@ class UpdatedPlant extends UpdatePlantState {
   @override
   List<Object?> get props => [];
 }
+
+class DeletedPlant extends UpdatePlantState {
+  @override
+  List<Object?> get props => [];
+}

@@ -13,3 +13,9 @@ class UpdatePlant extends UpdatePlantEvent {
 
   UpdatePlant(this.id, this.name, this.type, this.plantingDate);
 }
+
+class DeletePlant extends UpdatePlantEvent {
+  Plant plant;
+
+  DeletePlant(this.plant);
+}
