@@ -38,9 +38,6 @@ class _AddPlantPageState extends State<AddPlantPage> {
           }
         },
         builder: (context, state) {
-          if (state is Loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
           if (state is AddPlantLoaded) {
             return Center(
               child: Column(

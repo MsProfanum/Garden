@@ -18,17 +18,15 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   final DataSource dataSource;
   AddPlantBloc(this.dataSource) : super(AddPlantInitial()) {
     on<InitAddPlant>((event, emit) async {
-      emit(Loading());
       List<PlantType> plantTypes = await dataSource.findAllPlantTypes();
       emit(AddPlantLoaded(plantTypes));
     });
     on<SavePlant>((event, emit) async {
-      emit(Loading());
       int plantId = event.name.hashCode +
           event.type.hashCode +
           event.plantingDate.hashCode;
-      await dataSource.insertPlant(Plant(
-          event.name.hashCode, event.name, event.type, event.plantingDate));
+      await dataSource.insertPlant(
+          Plant(plantId, event.name, event.type, event.plantingDate));
       emit(PlantSaved());
     });
   }
