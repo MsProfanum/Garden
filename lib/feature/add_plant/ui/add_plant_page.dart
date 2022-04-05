@@ -127,7 +127,9 @@ class _AddPlantPageState extends State<AddPlantPage> {
                 )
               : Container(),
           ElevatedButton(
-              onPressed: () => _selectDate(), child: const Text('Select date'))
+              key: const Key('pickingDateButton'),
+              onPressed: () => _selectDate(),
+              child: const Text('Select date'))
         ],
       ),
     );

@@ -45,6 +45,18 @@ class DataSource {
     return database.plantDao.findAllPlants(pageSize, offset);
   }
 
+  Future<Plant?> findPlantById(int id) {
+    return database.plantDao.findPlantById(id);
+  }
+
+  Future<Plant?> findPlantByName(String name) {
+    return database.plantDao.findPlantByName(name);
+  }
+
+  Future<List<Plant>?> findPlantByType(String type) {
+    return database.plantDao.findPlantsByType(type);
+  }
+
   Future<void> insertPlant(Plant plant) async {
     database.plantDao.insertPlant(plant);
   }
